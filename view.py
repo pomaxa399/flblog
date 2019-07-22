@@ -6,3 +6,4 @@ from flask import render_template
 def index():
     name = 'Ivan'
     return render_template('index.html', name=name)
+# TODO: hlh
