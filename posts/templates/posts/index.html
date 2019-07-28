@@ -9,7 +9,26 @@
 {% endblock %}
 
 {% block content %}
-    {% for post in posts %}
+    {% for post in pages.items %}
     <p><a href="{{ url_for('posts.post_detail', slug=post.slug) }}">{{ post.title }}</a></p>
     {% endfor %}
+
+    <nav>
+        <ul class="pagination">
+            <li {% if not pages.has_prev %} class="page-item disabled" {% endif %} >
+                <a class="page-link" href="{% if request.args.get('q') %}./?q={{ request.args.get('q') }}&page={{ pages.prev_num }}{% else %}./?page={{ pages.prev_num }}{% endif %}">&laquo</a>
+            </li>
+            {% for page in pages.iter_pages() %}
+                <li {% if page == pages.page %} class="page-item active" aria-current="page" {% endif %} >
+                    <a href="{% if request.args.get('q') %}./?q={{ request.args.get('q') }}&page={{ page }}{% else %}./?page={{ page }}{% endif %}" class="page-link">{{ page }}<span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            {% endfor %}
+
+            <li {% if not pages.has_next %} class="page-item disabled" {% endif %} >
+                <a class="page-link" href="{% if request.args.get('q') %}./?q={{ request.args.get('q') }}&page={{ pages.next_num }}{% else %}./?page={{ pages.next_num }}{% endif %}">&raquo</a>
+            </li>
+        </ul>
+    </nav>
+
 {% endblock %}
